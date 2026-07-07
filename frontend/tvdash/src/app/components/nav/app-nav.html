@@ -1,0 +1,47 @@
+<nav class="h-full w-full bg-neutral-primary text-white flex flex-col items-center py-4">
+	<button pButton type="button" class="p-button-rounded p-button-text mb-4" (click)="visible = true" aria-label="Settings">
+		⚙️
+	</button>
+</nav>
+
+<!-- Backdrop -->
+
+@if (visible) {
+	<div class="fixed inset-0 bg-black/70 z-40" (click)="close()"></div>
+}
+
+<!-- Slide-in panel -->
+<div class="fixed top-0 left-0 h-full z-50 transform transition-transform duration-300 bg-neutral-950/95 border-r border-neutral-primary-soft/20 text-white shadow-2xl shadow-neutral-primary/10" [style.transform]="visible ? 'translateX(0)' : 'translateX(-360px)'" style="width:360px;">
+	<div class="flex justify-between items-center mb-4 p-4">
+		<h3 class="m-0 text-lg font-semibold text-neutral-primary">Settings</h3>
+		<button pButton type="button" class="p-button-text text-neutral-primary-soft" (click)="close()">✕</button>
+	</div>
+
+	<form (ngSubmit)="save()" class="space-y-5 p-4">
+		<div>
+			<label class="block mb-2 text-sm font-semibold text-neutral-primary-soft">Name</label>
+			<input [(ngModel)]="name" name="name" class="w-full rounded-xl border border-neutral-primary-soft/30 bg-neutral-900/90 px-3 py-2 text-white placeholder:text-neutral-primary-soft focus:border-neutral-primary focus:ring-2 focus:ring-neutral-primary/20 outline-none" placeholder="Name" />
+		</div>
+
+		<div>
+			<label class="block mb-2 text-sm font-semibold text-neutral-primary-soft">URL</label>
+			<input [(ngModel)]="url" name="url" class="w-full rounded-xl border border-neutral-primary-soft/30 bg-neutral-900/90 px-3 py-2 text-white placeholder:text-neutral-primary-soft focus:border-neutral-primary focus:ring-2 focus:ring-neutral-primary/20 outline-none" placeholder="URL" />
+		</div>
+
+		<div>
+			<label class="block mb-2 text-sm font-semibold text-neutral-primary-soft">Image</label>
+			<input type="file" (change)="onFileChange($event)" accept="image/*" class="text-neutral-primary-soft" />
+			@if (imageDataUrl) {
+				<div class="mt-2 rounded-xl border border-neutral-primary-soft/20 bg-neutral-950 p-2">
+					<img [src]="imageDataUrl" alt="preview" class="w-full rounded-lg" />
+				</div>
+			}
+		</div>
+
+		<div class="mt-4 flex justify-end gap-2">
+			<button pButton type="button" class="p-button-secondary" (click)="close()">Cancel</button>
+			<button pButton type="submit" class="p-button-primary">Save</button>
+		</div>
+	</form>
+</div>
+

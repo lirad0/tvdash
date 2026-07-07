@@ -1,0 +1,29 @@
+server:
+  port: ${SERVER_PORT:8080}
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+  data:
+    mongodb:
+      uri: ${MONGODB_LOCAL_URI:mongodb://root:verysecretlocalpassword@mongodb:27017/tvdash?authSource=admin}
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  data:
+    mongodb:
+      uri: ${MONGODB_DEV_URI:mongodb://localhost:27016/tvdash}
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+  data:
+    mongodb:
+      uri: ${MONGODB_PROD_URI:mongodb://localhost:27017/tvdash}

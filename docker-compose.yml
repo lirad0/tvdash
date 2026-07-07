@@ -1,0 +1,3 @@
+include:
+  - ./backend/docker-compose.server.yml
+  - ./frontend/tvdash/docker-compose.yml 

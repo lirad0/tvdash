@@ -1,0 +1,12 @@
+<div class="grid grid-cols-2 md:grid-cols-4 ">
+    @for (card of cards(); track card.id) {
+        <generic-card
+            [name]="card.name"
+            [img]="card.imageUrl"
+            [url]="card.url"
+        ></generic-card>
+    }
+    @for (item of urlOnlyItems(); track item.id) {
+        <weather-card [url]="item.url"></weather-card>
+    }
+</div>

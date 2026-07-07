@@ -1,0 +1,20 @@
+services:
+  mongodb:
+    image: mongodb/mongodb-enterprise-server:8.0.26-ubi9-slim
+    container_name: tvdash-mongodb
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=verysecretlocalpassword
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb-data:/data/db
+    networks:
+      - tvdash-network
+
+volumes:
+  mongodb-data:
+
+networks:
+  tvdash-network:
+    name: tvdash-network

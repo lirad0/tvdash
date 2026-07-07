@@ -1,0 +1,46 @@
+networks:
+  minio-local-net:
+    driver: bridge
+
+services:
+  minio-local:
+    # Open-source and maintained MinIO image from Elastic.io
+    image: elasticio/minio:26.27
+    container_name: minio-server-local
+    networks:
+      - minio-local-net
+    ports:
+      - "9000:9000" # Local S3 API port
+      - "9001:9001" # Local Web UI Console port
+    volumes:
+      - ./minio_local_data:/data
+    environment:
+      MINIO_ROOT_USER: "root"
+      MINIO_ROOT_PASSWORD: "verysecretlocalpassword"
+    command: server /data --console-address ":9001"
+
+  mc-local-setup:
+    # Updated to a specific, recent stable release tag of the official MinIO Client
+    image: minio/mc:RELEASE.2025-08-13T08-35-41Z
+    container_name: minio-client-setup
+    networks:
+      - minio-local-net
+    depends_on:
+      - minio-local
+    entrypoint: [ "/bin/sh", "-c" ]
+    command: >
+      "echo 'Waiting for MinIO server to start...';
+       sleep 5;
+       
+       # 1. Configure connection alias to the local server
+       mc alias set my_minio http://minio-local:9000 root verysecretlocalpassword;
+       
+       # 2. Automatically create a general storage bucket if it does not exist
+       if ! mc ls my_minio/app-storage > /dev/null 2>&1; then
+         echo 'Creating bucket: app-storage';
+         mc mb my_minio/app-storage;
+       else
+         echo 'Bucket app-storage already exists';
+       fi;
+       
+       echo 'Setup completed successfully!';"
