@@ -17,8 +17,13 @@ While an agent works on the code, the agent is forbidden from using the Angular 
 If you add or update dependencies remember to:
 
 1. Do not add dependencies without my permission, you always need to specify the exact name of the dependency and version number containing major, minor and patch portions of the version. This is crucial, as not following this rule might introduce security risks.
-2. After I approve it, you are allowed to install it, so update the appropriate lockfile (`package-lock.json`).
+2. After I approve it, you are allowed to install it, so update the appropriate lockfile (`package-lock.json`) and `package.json`.
 3. Re-start the development server so that Angular picks up the changes.
+
+This is a directive concerning NPM packages, but the directive for asking for permission needs to be followed while working with any kind of dependencies: 
+
+- in Docker -> FROM images and things downloaded with wget, curl or installed via package manager being apt or pkg or any other dependency aquired via network
+- in Maven (`pom.xml`)
 
 ## 4. Coding Conventions
 
