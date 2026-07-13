@@ -2,7 +2,7 @@
     @for (card of cards(); track card.id) {
         <generic-card
             [name]="card.name"
-            [img]="card.imageUrl"
+            [img]="card.imageUrl ? card.imageUrl : ''"
             [url]="card.url"
         ></generic-card>
     }

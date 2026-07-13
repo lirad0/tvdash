@@ -16,8 +16,20 @@ export class TableauService {
 
   getCards(): Observable<TableauCard[]> {
     return this.http.get<TableauCard[]>(`${this.baseUrl}/cards`).pipe(
-      map((cards) => cards.map((card) => ({ ...card, imageUrl: this.resolveImageUrl(card.imageUrl) }))),
+      map((cards) => cards.map((card) => ({ ...card, imageUrl: card.imageUrl ? this.resolveImageUrl(card.imageUrl) : null }))),
     );
+  }
+
+  saveCard(card: TableauCard): Observable<TableauCard> {
+    if (card.id) { //update card if it has an id, otherwise create a new card
+      return this.http.put<TableauCard>(`${this.baseUrl}/cards/${card.id}`, card);
+    }
+
+    return this.http.post<TableauCard>(`${this.baseUrl}/cards`, card);
+  }
+
+  deleteCard(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/cards/${id}`);
   }
 
   getUrlOnlyItems(): Observable<UrlOnlyItem[]> {

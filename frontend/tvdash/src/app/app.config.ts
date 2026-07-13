@@ -20,7 +20,7 @@ export const appConfig: ApplicationConfig = {
           darkModeSelector: ".tvdash-dark-theme", // Enables toggle via class (or use false for static dark mode)
           cssLayer: {
             name: 'primeng',
-            order: 'tailwind-base, primeng, tailwind-utilities'
+            order: 'theme, base, primeng'
           }
         }
       }
