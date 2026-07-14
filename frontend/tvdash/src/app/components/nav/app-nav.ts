@@ -28,8 +28,6 @@ export class AppNav {
 		url: ''
 	};
 
-	constructor(private zone: NgZone) {}
-
 	onFileChange(event: Event) {
 		const input = event.target as HTMLInputElement;
 
