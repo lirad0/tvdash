@@ -29,12 +29,24 @@
     {
       "label": "Backend: Docker (Debug)",
       "type": "shell",
-      "command": "DEBUG=true docker compose up",
+      "command": "DEBUG=true docker compose -f docker-compose.server.yml up ",
       "options": {
         "cwd": "${workspaceFolder}"
       },
       "isBackground": true,
-      "problemMatcher": [],
+      "problemMatcher": [{
+                "pattern": [{
+                    "regexp": "\\b\\B",
+                    "file": 1,
+                    "location": 2,
+                    "message": 3
+                }],
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": "^.*Preparing to execute Maven in debug mode.*",
+                    "endsPattern": "^.*Listening for transport dt_socket at address.*"
+                }
+      }],
       "presentation": {
         "echo": true,
         "reveal": "always",

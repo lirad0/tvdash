@@ -1,14 +1,10 @@
-networks:
-  minio-local-net:
-    driver: bridge
-
 services:
   minio-local:
     # Open-source and maintained MinIO image from Elastic.io
     image: elasticio/minio:26.27
     container_name: minio-server-local
     networks:
-      - minio-local-net
+      - tvdash-network
     ports:
       - "9000:9000" # Local S3 API port
       - "9001:9001" # Local Web UI Console port
@@ -24,7 +20,7 @@ services:
     image: minio/mc:RELEASE.2025-08-13T08-35-41Z
     container_name: minio-client-setup
     networks:
-      - minio-local-net
+      - tvdash-network
     depends_on:
       - minio-local
     entrypoint: [ "/bin/sh", "-c" ]
@@ -44,3 +40,7 @@ services:
        fi;
        
        echo 'Setup completed successfully!';"
+
+networks:
+  tvdash-network:
+    external: true
