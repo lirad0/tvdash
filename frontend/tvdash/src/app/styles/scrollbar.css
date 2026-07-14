@@ -8,6 +8,6 @@
 @layer components {
   .app-v-scrollbar {
     @apply scrollbar-thumb-custom scrollbar-track-custom-light 
-        scrollbar h-32 overflow-y-scroll;
+        scrollbar h-32 overflow-y-auto;
   }
 }
