@@ -1,0 +1,13 @@
+@plugin 'tailwind-scrollbar';
+
+@theme {
+    --color-custom: #6366f1;
+    --color-custom-light: #000;
+}
+
+@layer components {
+  .app-v-scrollbar {
+    @apply scrollbar-thumb-custom scrollbar-track-custom-light 
+        scrollbar h-32 overflow-y-scroll;
+  }
+}

@@ -2,19 +2,4 @@
 
 @import "tailwindcss";
 @import "tailwindcss-primeui";
-@plugin 'tailwind-scrollbar';
-
-@theme {
-  --color-custom: #6366F1;
-  --color-custom-light: #6366F1;
-  --scrollbar-thumb: #6366F1;
-}
-
-@layer components {
-  .app-v-scrollbar {
-    @apply scrollbar-thumb-custom scrollbar-track-custom-light 
-        scrollbar-hover:scrollbar-thumb-[#6366F1] 
-        scrollbar-active:scrollbar-thumb-indigo-500/50
-        scrollbar h-32 overflow-y-scroll;
-  }
-}
+@import "./app/styles/scrollbar.css"

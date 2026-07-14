@@ -1,4 +1,4 @@
-import { Component, Inject, inject } from '@angular/core';
+import { Component, inject, NgZone, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
@@ -15,10 +15,10 @@ import { TableauCard } from '../../models/tableau-card';
 })
 export class AppNav {
 	#mediaService = inject(MediaQueryService);
-	private readonly tableauService = inject(TableauService);
+	#tableauService = inject(TableauService);
 
 	visible = false;
-	imageDataUrl: string | null = null;
+	imageDataUrl = signal<string | null>(null);
 	isMobile = toSignal(this.#mediaService.mediaQuery('max', 'md'));
 	tableauCard: TableauCard = {
 		id: '',
@@ -28,16 +28,24 @@ export class AppNav {
 		url: ''
 	};
 
+	constructor(private zone: NgZone) {}
+
 	onFileChange(event: Event) {
 		const input = event.target as HTMLInputElement;
+
 		if (input.files && input.files[0]) {
 			this.tableauCard.file = input.files[0];
 			const reader = new FileReader();
+			
 			reader.onload = () => {
-				this.imageDataUrl = reader.result as string;
+				this.imageDataUrl.set(reader.result as string);
 			};
+
 			reader.readAsDataURL(this.tableauCard.file);
+		} else {
+			this.imageDataUrl.set(null);
 		}
+
 	}
 
 	getSidebarTranslation(visible: boolean): string {
@@ -54,7 +62,7 @@ export class AppNav {
 
 	save() {
 		// implement saving behavior as needed; currently closes the sidebar
-		this.tableauService.saveCard({
+		this.#tableauService.saveCard({
 			name: this.tableauCard.name,
 			url: this.tableauCard.url,
 			file: this.tableauCard.file,
