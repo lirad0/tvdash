@@ -63,7 +63,7 @@ class TableauCardControllerTest {
         doReturn(null).when(minioClient).putObject(any());
         when(repository.save(any(TableauCard.class))).thenReturn(card);
 
-        mockMvc.perform(multipart("/api/tableau/cards/upload")
+        mockMvc.perform(multipart("/api/tableau/cards")
                         .file(new MockMultipartFile("file", "sample.png", MediaType.IMAGE_PNG_VALUE, "image-data".getBytes(StandardCharsets.UTF_8)))
                         .param("name", "Sample")
                         .param("url", "https://example.com"))

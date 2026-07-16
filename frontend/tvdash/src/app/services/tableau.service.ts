@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -20,12 +20,12 @@ export class TableauService {
     );
   }
 
-  saveCard(card: TableauCard): Observable<TableauCard> {
-    if (card.id) { //update card if it has an id, otherwise create a new card
-      return this.http.put<TableauCard>(`${this.baseUrl}/cards/${card.id}`, card);
+  saveCard(formData: FormData, id: string = ""): Observable<TableauCard> {
+    if (id) { //update card if it has an id, otherwise create a new card
+      return this.http.put<any>(`${this.baseUrl}/cards/save/${id}`, formData);
     }
 
-    return this.http.post<TableauCard>(`${this.baseUrl}/cards`, card);
+    return this.http.post<any>(`${this.baseUrl}/cards/save`, formData);
   }
 
   deleteCard(id: string): Observable<void> {

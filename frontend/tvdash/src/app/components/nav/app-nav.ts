@@ -1,6 +1,6 @@
-import { Component, inject, NgZone, signal } from '@angular/core';
+import { Component, inject, NgZone, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormGroup, FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { MediaQueryService } from '../../services/mq.service';
 import { TableauService } from '../../services/tableau.service';
@@ -11,35 +11,41 @@ import { TableauCard } from '../../models/tableau-card';
 	selector: 'app-nav',
 	templateUrl: './app-nav.html',
 	styleUrls: ['./app-nav.css'],
-	imports: [CommonModule, FormsModule, ButtonModule]
+	imports: [ReactiveFormsModule, CommonModule, FormsModule, ButtonModule]
 })
-export class AppNav {
+export class AppNav implements OnInit {
 	#mediaService = inject(MediaQueryService);
 	#tableauService = inject(TableauService);
 
 	visible = false;
 	imageDataUrl = signal<string | null>(null);
 	isMobile = toSignal(this.#mediaService.mediaQuery('max', 'md'));
-	tableauCard: TableauCard = {
-		id: '',
-		name: '',
-		imageUrl: null,
-		file: null,
-		url: ''
-	};
+	file: File | null = null;
+
+	constructor(public fb: FormBuilder) { };
+
+	form!: FormGroup;
+
+	ngOnInit() {
+		this.form = this.fb.group({
+			name: [''],
+			url: [null],
+			file: [null]
+		})
+	}
 
 	onFileChange(event: Event) {
 		const input = event.target as HTMLInputElement;
 
 		if (input.files && input.files[0]) {
-			this.tableauCard.file = input.files[0];
+			this.file = input.files[0];
 			const reader = new FileReader();
-			
+
 			reader.onload = () => {
 				this.imageDataUrl.set(reader.result as string);
 			};
 
-			reader.readAsDataURL(this.tableauCard.file);
+			reader.readAsDataURL(this.file);
 		} else {
 			this.imageDataUrl.set(null);
 		}
@@ -60,13 +66,36 @@ export class AppNav {
 
 	save() {
 		// implement saving behavior as needed; currently closes the sidebar
-		this.#tableauService.saveCard({
-			name: this.tableauCard.name,
-			url: this.tableauCard.url,
-			file: this.tableauCard.file,
-			imageUrl: null,
-			id: ''
-		});
+		const formData = new FormData();
+
+		Object.keys(
+			this.form.controls
+		)
+			.forEach(
+				formControlName => {
+					const control = this.form.get(formControlName);
+					
+					let val;
+
+					if (control?.value) {
+						val = formControlName === "file" ? this.file : control?.value;
+					} else {
+						val = '';
+					}
+					
+					formData.append(
+						formControlName,
+						val
+					)
+				}
+			)
+
+		this.#tableauService.saveCard(
+			formData,
+			''
+		).subscribe(
+			(v) => console.info(v)
+		)
 	}
 
 	open() { this.visible = true; }
