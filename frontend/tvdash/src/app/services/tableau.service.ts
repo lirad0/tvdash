@@ -22,10 +22,10 @@ export class TableauService {
 
   saveCard(formData: FormData, id: string = ""): Observable<TableauCard> {
     if (id) { //update card if it has an id, otherwise create a new card
-      return this.http.put<any>(`${this.baseUrl}/cards/save/${id}`, formData);
+      return this.http.put<any>(`${this.baseUrl}/cards/${id}`, formData);
     }
 
-    return this.http.post<any>(`${this.baseUrl}/cards/save`, formData);
+    return this.http.post<any>(`${this.baseUrl}/cards`, formData);
   }
 
   deleteCard(id: string): Observable<void> {

@@ -39,7 +39,7 @@ public class TableauCardController {
         return repository.findAll();
     }
 
-    @PostMapping(path = "/save", consumes = "multipart/form-data")
+    @PostMapping(consumes = "multipart/form-data")
     public ResponseEntity<?> uploadCardImage(
             @RequestParam("file") MultipartFile file,
             @RequestParam("name") String name,

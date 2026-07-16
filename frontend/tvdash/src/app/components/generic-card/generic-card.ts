@@ -11,4 +11,5 @@ export class GenericCard {
   @Input() name!: string;
   @Input() img!: string;
   @Input() url!: string;
+  editMode: boolean = false;
 }

@@ -1,4 +1,17 @@
-<a [href]="url" class="generic-card-link">
+@if (!editMode) {
+  <a [href]="url" class="generic-card-link">
+    <div class="mb-4 p-4 flex items-center justify-center">
+      <p-card [style]="{ width: '25rem', overflow: 'hidden' }" class="border border-indigo-500/50">
+        <ng-template pTemplate="header">
+          <img class="w-full" [src]="img" [alt]="name" class="generic-card-image" />
+        </ng-template>
+        <ng-template #title>
+          <span class="flex justify-center mt-2 mb-2">{{ name }}</span>
+        </ng-template>
+      </p-card>
+    </div>
+  </a>
+} @else {
   <div class="mb-4 p-4 flex items-center justify-center">
     <p-card [style]="{ width: '25rem', overflow: 'hidden' }" class="border border-indigo-500/50">
       <ng-template pTemplate="header">
@@ -9,4 +22,5 @@
       </ng-template>
     </p-card>
   </div>
-</a>
+}
+
