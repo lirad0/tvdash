@@ -1,7 +1,7 @@
 <div class="mb-4 p-4 flex items-center justify-center">
   @if (!editMode) {
-    <a [href]="url" class="generic-card-link">
-      <p-card [style]="{ width: '25rem', overflow: 'hidden' }" class="border border-indigo-500/50">
+    <a [href]="url" class="generic-card-link flex w-full">
+      <p-card [style]="{ width: '100%', overflow: 'hidden' }" class="flex border border-indigo-500/50">
         <ng-template pTemplate="header">
           <img class="w-full" [src]="img" [alt]="name" class="generic-card-image" />
         </ng-template>
@@ -11,7 +11,7 @@
       </p-card>
     </a>
   } @else {
-    <p-card [style]="{ width: '25rem', overflow: 'hidden' }" class="border border-indigo-500/50">
+    <p-card [style]="{ width: '100%', overflow: 'hidden' }" class="border border-indigo-500/50">
       <ng-template pTemplate="header">
         <img class="w-full" [src]="img" [alt]="name" class="generic-card-image" />
       </ng-template>
