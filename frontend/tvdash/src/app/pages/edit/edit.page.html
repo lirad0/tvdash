@@ -1,6 +1,6 @@
 <main class="main flex flex-row min-h-screen bg-neutral-950">
   <div class="w-16">
-    <app-nav [showCustomizeButton]="false" [showBackButton]="true" [showAddButton]="true" #drawer></app-nav>
+    <app-nav [showCustomizeButton]="false" [showBackButton]="true" [showAddButton]="true" (backClick)="back()" #drawer></app-nav>
   </div>
   <div class="content flex-1 p-4">
     <tableau [editMode]="true"></tableau>

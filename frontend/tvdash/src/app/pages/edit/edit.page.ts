@@ -5,13 +5,13 @@ import { AppNav } from '../../components/nav/app-nav';
 import { Tableau } from '../../components/tableau/tableau';
 
 @Component({
-  selector: 'app-settings',
+  selector: 'app-edit',
   standalone: true,
   imports: [CommonModule, AppNav, Tableau],
-  templateUrl: './settings.page.html',
+  templateUrl: './edit.page.html',
   styleUrls: []
 })
-export class SettingsPage {
+export class EditPage {
   private readonly router = inject(Router);
 
   @ViewChild('drawer') drawer!: AppNav;

@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnInit, signal } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
@@ -19,12 +19,14 @@ export class AppNav implements OnInit {
 	@Input() showCustomizeButton = true;
 	@Input() showBackButton = false;
 	@Input() showAddButton = false;
+	@Output() backClick = new EventEmitter<void>();
 
 	#mediaService = inject(MediaQueryService);
 	#tableauService = inject(TableauService);
 	#router = inject(Router);
 
 	visible = false;
+	closeInstantly = false;
 	imageDataUrl = signal<string | null>(null);
 	isMobile = toSignal(this.#mediaService.mediaQuery('max', 'md'));
 	file: File | null = null;
@@ -105,8 +107,23 @@ export class AppNav implements OnInit {
 		)
 	}
 
-	open() { this.visible = true; }
-	close() { this.visible = false; }
-	customize() { this.#router.navigateByUrl('/settings'); }
-	back() { this.#router.navigateByUrl('/'); }
+	open() {
+		this.closeInstantly = false;
+		this.visible = true;
+	}
+
+	close() {
+		this.closeInstantly = false;
+		this.visible = false;
+	}
+
+	customize() { this.#router.navigateByUrl('/edit'); }
+
+	back(event: Event) {
+		event.preventDefault();
+		event.stopPropagation();
+		this.closeInstantly = true;
+		this.visible = false;
+		this.backClick.emit();
+	}
 }

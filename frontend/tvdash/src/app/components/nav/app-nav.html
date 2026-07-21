@@ -1,6 +1,6 @@
 <nav class="h-full min-h-screen w-full bg-neutral-primary text-white flex flex-col items-center py-4">
 	@if (showBackButton) {
-		<button pButton type="button" class="p-button-rounded p-button-text mb-4" (click)="back()" aria-label="Back">
+		<button pButton type="button" class="p-button-rounded p-button-text mb-4" (click)="back($event)" aria-label="Back">
 			<img src="/ui/back.svg" alt="Back" />
 		</button>
 	}
@@ -25,7 +25,9 @@
 }
 
 <!-- Slide-in panel -->
-<div class="s-in-panel app-v-scrollbar fixed top-0 left-0 h-full z-50 transform transition-transform duration-300 bg-neutral-950/95 border-r border-neutral-primary-soft/20 text-white shadow-2xl shadow-neutral-primary/10 w-[100vw] lg:w-[768px]" [style.transform]="getSidebarTranslation(visible)">
+<div class="s-in-panel app-v-scrollbar fixed top-0 left-0 h-full z-50 transform bg-neutral-950/95 border-r border-neutral-primary-soft/20 text-white shadow-2xl shadow-neutral-primary/10 w-[100vw] lg:w-[768px]"
+	[style.transition]="closeInstantly ? 'none' : 'transform 0.3s'"
+	[style.transform]="getSidebarTranslation(visible)">
 	<div class="flex justify-between items-center mb-4 p-4">
 		<h3 class="m-0 text-lg font-semibold text-neutral-primary">Settings</h3>
 		<button pButton type="button" class="p-button-text text-neutral-primary-soft" (click)="close()">✕</button>
