@@ -6,8 +6,8 @@
 	}
 
 	@if (showCustomizeButton) {
-		<button pButton type="button" class="p-button-rounded p-button-text mb-4" (click)="customize()" aria-label="Settings">
-			<img src="/ui/customize.svg" alt="Settings" />
+		<button pButton type="button" class="p-button-rounded p-button-text mb-4" (click)="customize()" aria-label="Edit">
+			<img src="/ui/customize.svg" alt="Edit" />
 		</button>
 	}
 
@@ -29,7 +29,7 @@
 	[style.transition]="closeInstantly ? 'none' : 'transform 0.3s'"
 	[style.transform]="getSidebarTranslation(visible)">
 	<div class="flex justify-between items-center mb-4 p-4">
-		<h3 class="m-0 text-lg font-semibold text-neutral-primary">Settings</h3>
+		<h3 class="m-0 text-lg font-semibold text-neutral-primary">Edit</h3>
 		<button pButton type="button" class="p-button-text text-neutral-primary-soft" (click)="close()">✕</button>
 	</div>
 
