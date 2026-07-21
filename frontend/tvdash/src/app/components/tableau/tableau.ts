@@ -1,4 +1,4 @@
-import { Component, inject, signal } from "@angular/core";
+import { Component, inject, Input, signal } from "@angular/core";
 import { GenericCard } from "../generic-card/generic-card";
 import { WeatherCard } from "../weather-card/weather-card";
 import { TableauService } from "../../services/tableau.service";
@@ -11,6 +11,8 @@ import { UrlOnlyItem } from "../../models/url-only-item";
   templateUrl: "./tableau.html"
 })
 export class Tableau {
+  @Input() editMode = false;
+
   private readonly tableauService = inject(TableauService);
 
   protected readonly cards = signal<TableauCard[]>([]);

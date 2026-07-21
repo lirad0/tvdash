@@ -1,7 +1,21 @@
-<nav class="h-full w-full bg-neutral-primary text-white flex flex-col items-center py-4">
-	<button pButton type="button" class="p-button-rounded p-button-text mb-4" (click)="visible = true" aria-label="Settings">
-		<img src="ui/customize.svg"/>
-	</button>
+<nav class="h-full min-h-screen w-full bg-neutral-primary text-white flex flex-col items-center py-4">
+	@if (showBackButton) {
+		<button pButton type="button" class="p-button-rounded p-button-text mb-4" (click)="back()" aria-label="Back">
+			<img src="/ui/back.svg" alt="Back" />
+		</button>
+	}
+
+	@if (showCustomizeButton) {
+		<button pButton type="button" class="p-button-rounded p-button-text mb-4" (click)="customize()" aria-label="Settings">
+			<img src="/ui/customize.svg" alt="Settings" />
+		</button>
+	}
+
+	@if (showAddButton) {
+		<button pButton type="button" class="p-button-rounded p-button-text mb-4" (click)="open()" aria-label="Add">
+			<img src="/ui/add.svg" alt="Add" />
+		</button>
+	}
 </nav>
 
 <!-- Backdrop -->

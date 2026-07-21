@@ -1,21 +1,28 @@
-import { Component, inject, NgZone, OnInit, signal } from '@angular/core';
+import { Component, inject, Input, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { MediaQueryService } from '../../services/mq.service';
 import { TableauService } from '../../services/tableau.service';
+import { Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { TableauCard } from '../../models/tableau-card';
 
 @Component({
 	selector: 'app-nav',
+	standalone: true,
 	templateUrl: './app-nav.html',
 	styleUrls: ['./app-nav.css'],
 	imports: [ReactiveFormsModule, CommonModule, FormsModule, ButtonModule]
 })
 export class AppNav implements OnInit {
+	@Input() showCustomizeButton = true;
+	@Input() showBackButton = false;
+	@Input() showAddButton = false;
+
 	#mediaService = inject(MediaQueryService);
 	#tableauService = inject(TableauService);
+	#router = inject(Router);
 
 	visible = false;
 	imageDataUrl = signal<string | null>(null);
@@ -100,4 +107,6 @@ export class AppNav implements OnInit {
 
 	open() { this.visible = true; }
 	close() { this.visible = false; }
+	customize() { this.#router.navigateByUrl('/settings'); }
+	back() { this.#router.navigateByUrl('/'); }
 }
