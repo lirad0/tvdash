@@ -26,7 +26,7 @@
 
 <!-- Slide-in panel -->
 <div class="s-in-panel app-v-scrollbar fixed top-0 left-0 h-full z-50 transform bg-neutral-950/95 border-r border-neutral-primary-soft/20 text-white shadow-2xl shadow-neutral-primary/10 w-[100vw] lg:w-[768px]"
-	[style.transition]="closeInstantly ? 'none' : 'transform 0.3s'"
+	[style.transition]="getSidebarTransition(visible)"
 	[style.transform]="getSidebarTranslation(visible)">
 	<div class="flex justify-between items-center mb-4 p-4">
 		<h3 class="m-0 text-lg font-semibold text-neutral-primary">Edit</h3>

@@ -26,7 +26,6 @@ export class AppNav implements OnInit {
 	#router = inject(Router);
 
 	visible = false;
-	closeInstantly = false;
 	imageDataUrl = signal<string | null>(null);
 	isMobile = toSignal(this.#mediaService.mediaQuery('max', 'md'));
 	file: File | null = null;
@@ -59,6 +58,10 @@ export class AppNav implements OnInit {
 			this.imageDataUrl.set(null);
 		}
 
+	}
+
+	getSidebarTransition(visible: boolean) {
+		return visible ? 'transform 0.3s' : 'transform none';
 	}
 
 	getSidebarTranslation(visible: boolean): string {
@@ -108,21 +111,16 @@ export class AppNav implements OnInit {
 	}
 
 	open() {
-		this.closeInstantly = false;
 		this.visible = true;
 	}
 
 	close() {
-		this.closeInstantly = false;
 		this.visible = false;
 	}
 
 	customize() { this.#router.navigateByUrl('/edit'); }
 
 	back(event: Event) {
-		event.preventDefault();
-		event.stopPropagation();
-		this.closeInstantly = true;
 		this.visible = false;
 		this.backClick.emit();
 	}
