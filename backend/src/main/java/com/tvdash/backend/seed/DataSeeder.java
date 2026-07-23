@@ -25,12 +25,12 @@ public class DataSeeder implements ApplicationRunner {
         if (tableauCardRepository.count() == 0) {
             TableauCard radio24 = new TableauCard();
             radio24.setName("Radio 24");
-            radio24.setImageUrl("img/radio-24.avif");
+            radio24.setimageName("img/radio-24.avif");
             radio24.setUrl("https://www.radio24.ilsole24ore.com/");
 
             TableauCard rmf = new TableauCard();
             rmf.setName("RMF FM");
-            rmf.setImageUrl("img/RMF.svg");
+            rmf.setimageName("img/RMF.svg");
             rmf.setUrl("https://radio111.pl/stations/rmf-fm-radio-rmf-fm/");
 
             tableauCardRepository.saveAll(List.of(radio24, rmf));

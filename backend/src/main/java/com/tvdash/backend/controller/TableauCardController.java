@@ -3,9 +3,16 @@ package com.tvdash.backend.controller;
 import com.tvdash.backend.config.MinioProperties;
 import com.tvdash.backend.model.TableauCard;
 import com.tvdash.backend.repository.TableauCardRepository;
+import com.tvdash.backend.services.FileService;
+import com.tvdash.backend.services.MinioService;
+
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,23 +23,20 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/tableau/cards")
 @CrossOrigin(origins = "*")
 public class TableauCardController {
-    private static final Set<String> ALLOWED_CONTENT_TYPES = Set.of(
+    private static Set<String> ALLOWED_CONTENT_TYPES = Set.of(
             "image/png", "image/svg+xml", "image/jpeg"
     );
 
     private final TableauCardRepository repository;
     private final MinioClient minioClient;
     private final MinioProperties minioProperties;
-
-    public TableauCardController(TableauCardRepository repository, MinioClient minioClient, MinioProperties minioProperties) {
-        this.repository = repository;
-        this.minioClient = minioClient;
-        this.minioProperties = minioProperties;
-    }
+    private final MinioService minioService;
+    private final FileService fileService;
 
     @GetMapping
     public List<TableauCard> findAll() {
@@ -49,33 +53,39 @@ public class TableauCardController {
             return ResponseEntity.badRequest().body("File is empty.");
         }
 
-        String contentType = file.getContentType();
-        if (contentType == null || !ALLOWED_CONTENT_TYPES.contains(contentType)) {
-            return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
-                    .body("Only PNG, JPG and SVG files are allowed.");
-        }
-
-        String extension = resolveExtension(contentType);
-        String objectName = UUID.randomUUID() + extension;
+        TableauCard card = new TableauCard();
 
         try (InputStream inputStream = file.getInputStream()) {
+            String contentType = fileService.getFileType(inputStream);
+
+            if (contentType == null || !ALLOWED_CONTENT_TYPES.contains(contentType)) {
+                return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+                    .body("Only PNG, JPG and SVG files are allowed.");
+            }
+
+            String extension = resolveExtension(contentType);
+
+            String imageName = UUID.randomUUID() + extension;
+
             minioClient.putObject(
                     PutObjectArgs.builder()
                             .bucket(minioProperties.getBucket())
-                            .object(objectName)
+                            .object(imageName)
                             .stream(inputStream, file.getSize(), -1)
                             .contentType(contentType)
                             .build()
             );
+
+            card.setimageName(imageName);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Failed to upload file: " + e.getMessage());
         }
 
-        TableauCard card = new TableauCard();
+        
         card.setName(name);
-        card.setImageUrl(objectName);
         card.setUrl(url);
+
         return ResponseEntity.ok(repository.save(card));
     }
 
@@ -91,7 +101,7 @@ public class TableauCardController {
         return repository.findById(id)
                 .map(existing -> {
                     existing.setName(card.getName());
-                    existing.setImageUrl(card.getImageUrl());
+                    existing.setimageName(card.getimageName());
                     existing.setUrl(card.getUrl());
                     return ResponseEntity.ok(repository.save(existing));
                 })
@@ -105,6 +115,15 @@ public class TableauCardController {
         }
         repository.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/stream/{fileName}")
+    public ResponseEntity<InputStreamResource> streamImage(@PathVariable String fileName) throws Exception {
+        InputStream stream = minioService.getImageStream(fileName);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.)
+                .body(new InputStreamResource(stream));
     }
 
     private String resolveExtension(String contentType) {

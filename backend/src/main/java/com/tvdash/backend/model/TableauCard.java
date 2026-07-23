@@ -12,7 +12,7 @@ public class TableauCard {
     @NotBlank
     private String name;
 
-    private String imageUrl;
+    private String imageName;
 
     @NotBlank
     private String url;
@@ -36,12 +36,12 @@ public class TableauCard {
         this.name = name;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public String getimageName() {
+        return imageName;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setimageName(String imageName) {
+        this.imageName = imageName;
     }
 
     public String getUrl() {

@@ -40,23 +40,23 @@ class TableauCardControllerTest {
     void shouldCreateCard() throws Exception {
         TableauCard card = new TableauCard();
         card.setName("Sample");
-        card.setImageUrl("img/sample.png");
+        card.setimageName("sample.png");
         card.setUrl("https://example.com");
 
         when(repository.save(any(TableauCard.class))).thenReturn(card);
 
         mockMvc.perform(post("/api/tableau/cards")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"name\":\"Sample\",\"imageUrl\":\"img/sample.png\",\"url\":\"https://example.com\"}"))
+                        .content("{\"name\":\"Sample\",\"imageName\":\"sample.png\",\"url\":\"https://example.com\"}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("Sample"));
     }
 
     @Test
-    void shouldUploadImageAndSaveTheGeneratedObjectName() throws Exception {
+    void shouldUploadImageAndSaveTheGeneratedimageName() throws Exception {
         TableauCard card = new TableauCard();
         card.setName("Sample");
-        card.setImageUrl("generated-image.png");
+        card.setimageName("generated-image.png");
         card.setUrl("https://example.com");
 
         when(minioProperties.getBucket()).thenReturn("images");
@@ -69,6 +69,6 @@ class TableauCardControllerTest {
                         .param("url", "https://example.com"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("Sample"))
-                .andExpect(jsonPath("$.imageUrl").isNotEmpty());
+                .andExpect(jsonPath("$.imageName").isNotEmpty());
     }
 }
