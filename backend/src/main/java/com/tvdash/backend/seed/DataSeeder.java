@@ -23,17 +23,17 @@ public class DataSeeder implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) {
         if (tableauCardRepository.count() == 0) {
-            TableauCard radio24 = new TableauCard();
-            radio24.setName("Radio 24");
-            radio24.setimageName("img/radio-24.avif");
-            radio24.setUrl("https://www.radio24.ilsole24ore.com/");
+            TableauCard exampleUrl1 = new TableauCard();
+            exampleUrl1.setName("Example Url 1");
+            exampleUrl1.setimageName("img.png");
+            exampleUrl1.setUrl("https://placehold.co/600x400");
 
-            TableauCard rmf = new TableauCard();
-            rmf.setName("RMF FM");
-            rmf.setimageName("img/RMF.svg");
-            rmf.setUrl("https://radio111.pl/stations/rmf-fm-radio-rmf-fm/");
+            TableauCard exampleUrl2 = new TableauCard();
+            exampleUrl2.setName("Example Url 2");
+            exampleUrl2.setimageName("img.svg");
+            exampleUrl2.setUrl("https://placehold.co/600x400/000000/FFFFFF.png");
 
-            tableauCardRepository.saveAll(List.of(radio24, rmf));
+            tableauCardRepository.saveAll(List.of(exampleUrl1, exampleUrl2));
         }
 
         if (urlOnlyItemRepository.count() == 0) {
